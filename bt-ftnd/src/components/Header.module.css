@@ -1,0 +1,153 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.teamBadge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.nav {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.navLink:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navLink:hover::after {
+  width: 80%;
+}
+
+.navIcon {
+  font-size: 1.1rem;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.userAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.userAvatar:hover {
+  transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .headerContent {
+    padding: 0 15px;
+  }
+  
+  .nav {
+    gap: 15px;
+  }
+  
+  .navLink {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .navIcon {
+    font-size: 1rem;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+  }
+  
+  .teamBadge {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav {
+    gap: 10px;
+  }
+  
+  .navLink span:not(.navIcon) {
+    display: none;
+  }
+  
+  .navLink {
+    padding: 8px;
+  }
+  
+  .teamBadge {
+    display: none;
+  }
+}

@@ -1,0 +1,9 @@
+# Node backend
+bt-bknd/node_modules
+bt-bknd/.env
+bt-bknd/dist
+
+# React frontend
+bt-ftn/node_modules
+bt-ftn/.env
+bt-ftn/build
