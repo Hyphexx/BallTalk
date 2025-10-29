@@ -3,7 +3,7 @@ import axios from "axios";
 import styles from "./TeamVideos.module.css";
 
 function TeamVideos() {
-  const [selectedTeam, setSelectedTeam] = useState("Ravens");
+  const [selectedTeam, setSelectedTeam] = useState("Cowboys");
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +19,6 @@ function TeamVideos() {
     "Seattle Seahawks", "Tampa Bay Buccaneers", "Tennessee Titans", "Washington Commanders"
   ];
 
-  // Filter teams based on search
   const filteredTeams = nflTeams.filter(team =>
     team.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -58,7 +57,6 @@ function TeamVideos() {
         <p className={styles.subtitle}>Latest videos for your favorite team</p>
       </div>
 
-      {/* Team Search/Select */}
       <div className={styles.teamSelector}>
         <div className={styles.searchContainer}>
           <input
@@ -92,7 +90,6 @@ function TeamVideos() {
         </div>
       </div>
 
-      {/* Videos Grid */}
       <div className={styles.container}>
         {loading ? (
           <div className={styles.loadingGrid}>
@@ -142,7 +139,6 @@ function TeamVideos() {
         )}
       </div>
 
-      {/* Quick Team Buttons */}
       <div className={styles.quickTeams}>
         <h4>Popular Teams:</h4>
         <div className={styles.teamButtons}>

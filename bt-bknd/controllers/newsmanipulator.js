@@ -20,9 +20,9 @@ exports.getNFLNews = async (req, res) => {
     
     const requestBody = {
       action: "getArticles",
-      keyword: `${team} NFL`,
+      keyword: `${team} NFL `,
       articlesPage: 1,
-      articlesCount: 20,
+      articlesCount: 10,
       articlesSortBy: "date",
       articlesSortByAsc: false,
       lang: "eng",

@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { ThemeContext } from "../context/ThemeContext";
 import styles from "./News.module.css";
 
 function News() {
-  const { team } = useContext(ThemeContext);
-  const [selectedTeam, setSelectedTeam] = useState(team || "Ravens");
+  const [selectedTeam, setSelectedTeam] = useState("Ravens");
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

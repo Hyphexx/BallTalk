@@ -6,7 +6,7 @@ import styles from "./TeamTalk.module.css";
 
 const teamSubreddits = {
   "Ravens": "ravens",
-  "49ers": "49ers", 
+  "49ers": "49ers",
   "Bengals": "bengals",
   "Bills": "buffalobills",
   "Broncos": "DenverBroncos",
@@ -47,28 +47,26 @@ function TeamTalk() {
   const [retryCount, setRetryCount] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
 
-  // Save favorite team to localStorage
   const saveFavoriteTeam = (teamName) => {
-    localStorage.setItem('favoriteTeam', teamName);
+    localStorage.setItem("favoriteTeam", teamName);
   };
 
-  // Load favorite team from localStorage
   const loadFavoriteTeam = () => {
-    return localStorage.getItem('favoriteTeam') || "Ravens";
+    return localStorage.getItem("favoriteTeam") || "Ravens";
   };
 
   const fetchPosts = async (teamName, isRefresh = false) => {
     if (!isRefresh) setLoading(true);
     setRefreshing(isRefresh);
     setError(null);
-    
+
     try {
       console.log(`🚀 Fetching posts for: ${teamName}`);
       const response = await axios.get(
-        `http://localhost:5000/api/reddit/team/${encodeURIComponent(teamName)}`, 
+        `http://localhost:5000/api/reddit/team/${encodeURIComponent(teamName)}`,
         { timeout: 10000 }
       );
-      
+
       if (response.data.success) {
         setPosts(response.data.data || []);
         console.log(`✅ Loaded ${response.data.data?.length || 0} posts`);
@@ -77,10 +75,9 @@ function TeamTalk() {
       }
     } catch (err) {
       console.error("❌ API Error:", err);
-      
+
       let errorMessage = "Failed to load posts";
-      
-      if (err.code === 'NETWORK_ERROR' || err.code === 'ECONNREFUSED') {
+      if (err.code === "NETWORK_ERROR" || err.code === "ECONNREFUSED") {
         errorMessage = "Backend server not running. Start: 'npm start' in backend folder";
       } else if (err.response?.status === 404) {
         errorMessage = `No subreddit found for ${teamName}`;
@@ -88,10 +85,10 @@ function TeamTalk() {
         errorMessage = "Reddit rate limit hit. Wait 60 seconds.";
       } else if (err.response?.data?.message) {
         errorMessage = err.response.data.message;
-      } else if (err.message?.includes('timeout')) {
+      } else if (err.message?.includes("timeout")) {
         errorMessage = "Request timeout. Check your connection.";
       }
-      
+
       setError(errorMessage);
       setPosts([]);
     } finally {
@@ -100,7 +97,6 @@ function TeamTalk() {
     }
   };
 
-  // Initial load - check localStorage for favorite team
   useEffect(() => {
     const favoriteTeam = loadFavoriteTeam();
     setSelectedTeam(favoriteTeam);
@@ -108,7 +104,6 @@ function TeamTalk() {
     fetchPosts(favoriteTeam);
   }, []);
 
-  // When team changes
   useEffect(() => {
     if (selectedTeam && selectedTeam !== team) {
       setTeam(selectedTeam);
@@ -117,71 +112,54 @@ function TeamTalk() {
     }
   }, [selectedTeam]);
 
-  const handleTeamChange = (newTeam) => {
-    setSelectedTeam(newTeam);
-  };
-
+  const handleTeamChange = (newTeam) => setSelectedTeam(newTeam);
   const handleRetry = () => {
-    setRetryCount(prev => prev + 1);
+    setRetryCount((prev) => prev + 1);
     fetchPosts(selectedTeam);
   };
-
-  const handleRefresh = () => {
-    fetchPosts(selectedTeam, true);
-  };
+  const handleRefresh = () => fetchPosts(selectedTeam, true);
 
   const openRedditPost = (permalink, event) => {
     event.stopPropagation();
-    window.open(permalink, '_blank', 'noopener,noreferrer');
+    window.open(permalink, "_blank", "noopener,noreferrer");
   };
 
-  const getTeamOptions = () => {
-    return Object.keys(themes).sort();
-  };
-
+  const getTeamOptions = () => Object.keys(themes).sort();
   const currentTheme = themes[selectedTeam] || themes.Ravens;
 
-  // Format number with K/M
   const formatNumber = (num) => {
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
+    if (num >= 1000) return (num / 1000).toFixed(1) + "K";
     return num;
   };
 
   return (
     <div className={styles.page} style={{ background: currentTheme.background }}>
-      {/* Hero Header */}
-      <div className={styles.heroSection} style={{ 
-        background: `linear-gradient(135deg, ${currentTheme.primary} 0%, ${currentTheme.accent} 100%)`,
-        color: currentTheme.text 
-      }}>
+     
+      <div
+        className={styles.heroSection}
+        style={{
+          background: `linear-gradient(135deg, ${currentTheme.primary} 0%, ${currentTheme.accent} 100%)`,
+          color: currentTheme.text,
+        }}
+      >
         <div className={styles.heroContent}>
           <div className={styles.heroText}>
             <h1 className={styles.heroTitle}>Team Talk</h1>
             <p className={styles.heroSubtitle}>
               Real-time discussions from NFL team subreddits
             </p>
-            <div className={styles.stats}>
-              <div className={styles.stat}>
-                <span className={styles.statNumber}>32</span>
-                <span className={styles.statLabel}>Teams</span>
-              </div>
-              <div className={styles.stat}>
-                <span className={styles.statNumber}>1M+</span>
-                <span className={styles.statLabel}>Fans</span>
-              </div>
-              <div className={styles.stat}>
-                <span className={styles.statNumber}>Live</span>
-                <span className={styles.statLabel}>Updates</span>
-              </div>
-            </div>
+
+           
           </div>
-          
+
+         
           <div className={styles.teamSelectorContainer}>
             <div className={styles.selectorHeader}>
               <span className={styles.selectorIcon}>🏈</span>
               <span>Select Your Team</span>
             </div>
+
             <select
               value={selectedTeam}
               onChange={(e) => handleTeamChange(e.target.value)}
@@ -189,7 +167,7 @@ function TeamTalk() {
               style={{
                 borderColor: currentTheme.text,
                 color: currentTheme.primary,
-                background: 'rgba(255, 255, 255, 0.95)'
+                background: "rgba(255, 255, 255, 0.95)",
               }}
             >
               {getTeamOptions().map((teamName) => (
@@ -198,24 +176,25 @@ function TeamTalk() {
                 </option>
               ))}
             </select>
+
             <div className={styles.selectedTeamInfo}>
               <span className={styles.subredditTag}>
                 r/{teamSubreddits[selectedTeam]}
               </span>
-              <button 
+              <button
                 onClick={handleRefresh}
                 disabled={refreshing}
                 className={styles.refreshButton}
                 style={{ background: currentTheme.text, color: currentTheme.primary }}
               >
-                {refreshing ? '🔄' : '↻'} Refresh
+                {refreshing ? "🔄" : "↻"} Refresh
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* ===== MAIN CONTENT ===== */}
       <div className={styles.mainContainer}>
         {loading && !refreshing && (
           <div className={styles.loadingState}>
@@ -236,8 +215,8 @@ function TeamTalk() {
               <button onClick={handleRetry} className={styles.primaryButton}>
                 Try Again
               </button>
-              <button 
-                onClick={() => window.location.reload()} 
+              <button
+                onClick={() => window.location.reload()}
                 className={styles.secondaryButton}
               >
                 Reload Page
@@ -259,61 +238,42 @@ function TeamTalk() {
 
         {!loading && !error && posts.length > 0 && (
           <div className={styles.contentArea}>
-            <div className={styles.contentHeader}>
-              <div className={styles.resultsInfo}>
-                <h2>Community Feed</h2>
-                <span className={styles.postsCount}>
-                  {posts.length} posts from r/{teamSubreddits[selectedTeam]}
-                </span>
-              </div>
-              <div className={styles.controls}>
-                <button 
-                  onClick={handleRefresh}
-                  disabled={refreshing}
-                  className={styles.refreshBtn}
-                >
-                  {refreshing ? 'Refreshing...' : 'Refresh Feed'}
-                </button>
-              </div>
-            </div>
-
+           
             <div className={styles.postsGrid}>
               {posts.map((post, index) => (
-                <div 
+                <div
                   key={`${post.id}-${index}`}
                   className={styles.postCard}
-                  onClick={() => window.open(post.permalink, '_blank')}
+                  onClick={() => window.open(post.permalink, "_blank")}
                 >
                   <div className={styles.postHeader}>
                     <div className={styles.userInfo}>
-                      <div 
+                      <div
                         className={styles.avatar}
                         style={{ background: currentTheme.primary }}
                       >
-                        {post.author?.[0]?.toUpperCase() || 'U'}
+                        {post.author?.[0]?.toUpperCase() || "U"}
                       </div>
                       <div className={styles.userDetails}>
                         <span className={styles.username}>u/{post.author}</span>
                         <span className={styles.timestamp}>{post.timeAgo}</span>
                       </div>
                     </div>
-                    <div className={styles.domainTag}>
-                      {post.domain}
-                    </div>
+                    <div className={styles.domainTag}>{post.domain}</div>
                   </div>
 
                   <div className={styles.postContent}>
                     <h3 className={styles.postTitle}>{post.title}</h3>
-                    
+
                     {post.image && (
                       <div className={styles.imageContainer}>
-                        <img 
-                          src={post.image} 
+                        <img
+                          src={post.image}
                           alt="Post content"
                           className={styles.postImage}
                           loading="lazy"
                           onError={(e) => {
-                            e.target.style.display = 'none';
+                            e.target.style.display = "none";
                           }}
                         />
                       </div>
@@ -322,14 +282,14 @@ function TeamTalk() {
 
                   <div className={styles.postFooter}>
                     <div className={styles.engagement}>
-                      <div 
+                      <div
                         className={styles.engagementItem}
                         onClick={(e) => openRedditPost(post.permalink, e)}
                       >
                         <span className={styles.engagementIcon}>⬆️</span>
                         <span>{formatNumber(post.score)}</span>
                       </div>
-                      <div 
+                      <div
                         className={styles.engagementItem}
                         onClick={(e) => openRedditPost(post.permalink, e)}
                       >
@@ -337,12 +297,12 @@ function TeamTalk() {
                         <span>{formatNumber(post.comments)}</span>
                       </div>
                     </div>
-                    <button 
+                    <button
                       className={styles.openButton}
                       onClick={(e) => openRedditPost(post.permalink, e)}
-                      style={{ 
+                      style={{
                         background: currentTheme.primary,
-                        color: currentTheme.text
+                        color: currentTheme.text,
                       }}
                     >
                       Open in Reddit
