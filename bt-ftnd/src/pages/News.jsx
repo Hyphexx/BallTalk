@@ -21,7 +21,10 @@ function News() {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get(`http://localhost:5000/api/news/${teamName}`);
+     const res = await axios.get(
+  `${process.env.REACT_APP_API_BASE_URL}/news/${teamName}`
+);
+
       setArticles(res.data);
     } catch (err) {
       console.error("Error fetching news:", err);

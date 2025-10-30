@@ -63,9 +63,9 @@ function TeamTalk() {
     try {
       console.log(`🚀 Fetching posts for: ${teamName}`);
       const response = await axios.get(
-        `http://localhost:5000/api/reddit/team/${encodeURIComponent(teamName)}`,
-        { timeout: 10000 }
-      );
+  `${process.env.REACT_APP_API_BASE_URL}/reddit/team/${encodeURIComponent(teamName)}`,{timeout:10000}
+);
+
 
       if (response.data.success) {
         setPosts(response.data.data || []);

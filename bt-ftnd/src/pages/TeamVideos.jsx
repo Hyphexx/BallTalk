@@ -26,7 +26,9 @@ function TeamVideos() {
   const fetchTeamVideos = async (teamName) => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/team-videos?team=${teamName}`);
+     const res = await axios.get(
+  `${process.env.REACT_APP_API_BASE_URL}/team-videos?team=${teamName}`
+);
       setVideos(res.data);
       console.log(`Loaded ${res.data.length} videos for ${teamName}`);
     } catch (err) {
