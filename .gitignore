@@ -1,0 +1,9 @@
+# Node backend
+api/node_modules
+api/.env
+api/dist
+
+# React frontend
+client/node_modules
+client/.env
+client/build
